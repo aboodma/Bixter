@@ -1,5 +1,9 @@
 <?php
-
+/*
+* This File Made By Abdulrahman Mardini
+* In This File Router Will Define The Controllers , Actions , Params
+* The route($url) Function Take $url Param This Param Come From Index.php And Will Explode Here 
+*/
 class Router {
   public static function route($url)  {
     //Define Controller

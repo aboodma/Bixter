@@ -1,6 +1,8 @@
 <?php
 
-/**
+/*
+ * This File Made By Abdulrahman Mardini
+ * In This File Will Generate The View Using The $type 
  *
  */
 class View {
@@ -19,12 +21,12 @@ class View {
       include (ROOT.DS.'App'.DS.'views'.DS.$viewString.'.php');
        include (ROOT.DS.'App'.DS.'views'.DS.'layouts'.DS.$this->_layout.'.php');
     }else {
-      die("the view ".$viewName. "NOT FOUND!!!");
+      die("the View ".$viewName. "NOT FOUND!!!");
     }
   }
   public function content($type)
   {
-    // This function Have @Paramiter $type Will Return The Content Using type  
+    // This function Have @Paramiter $type Will Return The Content Using type
     if ($type=='head') {
       return $this->_head;
     }elseif ($type=='body') {
