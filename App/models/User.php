@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bixter\App\Models;
 
 use Bixter\Core\Model;
+use Bixter\Core\Validator;
 
 class User extends Model
 {
@@ -22,21 +23,27 @@ class User extends Model
 
     public function validate(array $data): bool
     {
-        $this->_errors = [];
+        $id = $data['id'] ?? null;
+        $rules = [
+            'username' => 'required|min:3',
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ];
 
-        if (empty($data['username']) || strlen($data['username']) < 3) {
-            $this->_errors['username'] = 'Username must be at least 3 characters.';
+        if ($id !== null) {
+            unset($rules['password']);
+            $rules['email'] .= '|unique:users,email,id,' . $id;
+        } else {
+            $rules['email'] .= '|unique:users,email';
         }
 
-        if (empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $this->_errors['email'] = 'A valid email is required.';
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            $this->_errors = $validator->errors();
+            return false;
         }
 
-        if (empty($data['password']) || strlen($data['password']) < 6) {
-            $this->_errors['password'] = 'Password must be at least 6 characters.';
-        }
-
-        return !$this->hasErrors();
+        return true;
     }
 
     public function register(array $data): ?int

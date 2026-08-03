@@ -36,6 +36,7 @@ class_alias('Bixter\\Core\\Application', 'Application');
 use Bixter\Core\Request;
 use Bixter\Core\View;
 use Bixter\Core\Router;
+use Bixter\Core\Validator;
 
 $passed = 0;
 $failed = 0;
@@ -71,6 +72,16 @@ assert_true($view->siteTitle() === 'Test', 'View sets and returns title');
 
 // Helper escaping
 assert_true(e('<script>') === '&lt;script&gt;', 'e() escapes HTML');
+
+// Validator
+$validator = Validator::make(['email' => 'bad'], ['email' => 'required|email']);
+assert_true($validator->fails(), 'Validator rejects invalid email');
+
+$validator = Validator::make(['username' => 'ab', 'email' => 'test@example.com'], ['username' => 'required|min:3', 'email' => 'required|email']);
+assert_true($validator->fails(), 'Validator rejects short username');
+
+$validator = Validator::make(['username' => 'alice', 'email' => 'test@example.com', 'status' => 'published'], ['username' => 'required|min:3', 'email' => 'required|email', 'status' => 'in:draft,published']);
+assert_true($validator->passes(), 'Validator accepts valid data');
 
 $total = $passed + $failed;
 echo "\n{$passed}/{$total} passed, {$failed} failed.\n";

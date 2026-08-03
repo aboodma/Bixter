@@ -140,6 +140,7 @@ class Admin extends Controller
 
         if ($this->request->isPost()) {
             $data = [
+                'id' => $id,
                 'username' => $this->request->post('username'),
                 'email' => $this->request->post('email'),
                 'role' => $this->request->post('role', 'user'),
@@ -210,6 +211,7 @@ class Admin extends Controller
 
         if ($this->request->isPost()) {
             $data = $this->_postData();
+            $data['id'] = $id;
 
             if ($this->_post->validate($data)) {
                 $this->_post->update($id, $data);

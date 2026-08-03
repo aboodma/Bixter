@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bixter\App\Models;
 
 use Bixter\Core\Model;
+use Bixter\Core\Validator;
 use Bixter\Core\Application;
 
 class Post extends Model
@@ -26,24 +27,26 @@ class Post extends Model
 
     public function validate(array $data): bool
     {
-        $this->_errors = [];
+        $id = $data['id'] ?? null;
+        $rules = [
+            'title' => 'required|min:3',
+            'slug' => 'required|regex:/^[a-z0-9-]+$/',
+            'content' => 'required',
+            'status' => 'required|in:draft,published',
+        ];
 
-        if (empty($data['title']) || strlen($data['title']) < 3) {
-            $this->_errors['title'] = 'Title must be at least 3 characters.';
+        if ($id !== null) {
+            $rules['slug'] .= '|unique:posts,slug,id,' . $id;
+        } else {
+            $rules['slug'] .= '|unique:posts,slug';
         }
 
-        if (empty($data['slug']) || !preg_match('/^[a-z0-9-]+$/', $data['slug'])) {
-            $this->_errors['slug'] = 'Slug must contain only lowercase letters, numbers, and hyphens.';
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            $this->_errors = $validator->errors();
+            return false;
         }
 
-        if (empty($data['content'])) {
-            $this->_errors['content'] = 'Content is required.';
-        }
-
-        if (!in_array($data['status'] ?? '', ['draft', 'published'])) {
-            $this->_errors['status'] = 'Status must be draft or published.';
-        }
-
-        return !$this->hasErrors();
+        return true;
     }
 }
