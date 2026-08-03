@@ -17,6 +17,7 @@ class Admin extends Controller
     public function __construct(string $controller, string $action)
     {
         parent::__construct($controller, $action);
+        $this->view->setLayout('admin');
         $this->_user = new User();
         $this->_post = new Post();
     }

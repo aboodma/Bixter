@@ -1,5 +1,11 @@
+<?php $this->setSiteTitle('Tool Two'); ?>
 
 <?php $this->start('body'); ?>
-
-<h1 class="text-center red">This Is Tools Second</h1>
+<div class="container">
+    <div class="card text-center">
+        <h1>Tool Two</h1>
+        <p class="text-muted">This is the second demo tool.</p>
+        <a href="<?= root('tools') ?>" class="btn btn-default">&larr; Back to tools</a>
+    </div>
+</div>
 <?php $this->end(); ?>

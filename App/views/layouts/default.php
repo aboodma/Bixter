@@ -33,13 +33,25 @@
 
     <div class="container" style="margin-bottom: 20px;">
         <?php if ($message = Application::$session->flash('success')) : ?>
-            <div class="alert alert-success"><?= e($message) ?></div>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?= e($message) ?>
+            </div>
         <?php endif; ?>
         <?php if ($message = Application::$session->flash('error')) : ?>
-            <div class="alert alert-danger"><?= e($message) ?></div>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?= e($message) ?>
+            </div>
         <?php endif; ?>
     </div>
 
     <?= $this->content('body') ?>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <?= date('Y') ?> <?= SITE_TITLE ?>. Built with Bixter.</p>
+        </div>
+    </footer>
 </body>
 </html>

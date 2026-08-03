@@ -10,16 +10,20 @@
     <script src="<?= PROOT ?>js/bootstrap.min.js"></script>
     <?= $this->content('head') ?>
 </head>
-<body>
-    <div class="container" style="margin-bottom: 10px;">
-        <?php if ($message = Application::$session->flash('success')) : ?>
-            <div class="alert alert-success"><?= e($message) ?></div>
-        <?php endif; ?>
-        <?php if ($message = Application::$session->flash('error')) : ?>
-            <div class="alert alert-danger"><?= e($message) ?></div>
-        <?php endif; ?>
-    </div>
+<body style="background-color: var(--gray-2);">
+    <div class="container" style="margin-top: 60px;">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <?php if ($message = Application::$session->flash('success')) : ?>
+                    <div class="alert alert-success"><?= e($message) ?></div>
+                <?php endif; ?>
+                <?php if ($message = Application::$session->flash('error')) : ?>
+                    <div class="alert alert-danger"><?= e($message) ?></div>
+                <?php endif; ?>
 
-    <?= $this->content('body') ?>
+                <?= $this->content('body') ?>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

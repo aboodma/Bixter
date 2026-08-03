@@ -77,7 +77,8 @@ class Router
         }
 
         http_response_code(404);
-        include ROOT . DS . 'App' . DS . 'views' . DS . '404.php';
+        $view = new View();
+        $view->render('errors/404');
         return false;
     }
 

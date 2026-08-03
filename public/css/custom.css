@@ -1,3 +1,225 @@
-.red{
-	color: red;
+:root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --success: #06d6a0;
+    --danger: #ef476f;
+    --warning: #ffd166;
+    --info: #118ab2;
+    --dark: #1b263b;
+    --gray: #f8f9fa;
+    --gray-2: #e9ecef;
+    --text: #2b2d42;
+    --text-muted: #6c757d;
+}
+
+body {
+    background-color: var(--gray);
+    color: var(--text);
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.navbar {
+    background-color: #fff;
+    border-bottom: 1px solid var(--gray-2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    margin-bottom: 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--primary) !important;
+    font-size: 22px;
+}
+
+.navbar-nav > li > a {
+    color: var(--text);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+    color: var(--primary);
+    background-color: transparent !important;
+}
+
+.jumbotron {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--info) 100%);
+    color: #fff;
+    border-radius: 0;
+    padding: 80px 20px;
+    margin-bottom: 40px;
+}
+
+.jumbotron h1 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.jumbotron .lead {
+    font-size: 20px;
+    opacity: 0.95;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 25px;
+    margin-bottom: 25px;
+    border: none;
+}
+
+.panel.panel-default {
+    border-radius: 10px;
+    border: 1px solid var(--gray-2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.panel-heading {
+    background-color: #fff;
+    border-bottom: 1px solid var(--gray-2);
+    border-radius: 10px 10px 0 0;
+    font-weight: 600;
+}
+
+.table {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table th {
+    background-color: var(--gray-2);
+    font-weight: 600;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.badge-success { background-color: var(--success); color: #fff; }
+.badge-warning { background-color: var(--warning); color: #333; }
+.badge-default { background-color: var(--gray-2); color: var(--text); }
+.badge-danger { background-color: var(--danger); color: #fff; }
+
+.admin-wrapper {
+    display: flex;
+    min-height: calc(100vh - 52px);
+}
+
+.sidebar {
+    width: 240px;
+    background: var(--dark);
+    color: #fff;
+    padding: 25px 0;
+    flex-shrink: 0;
+}
+
+.sidebar .nav > li > a {
+    color: #cbd5e1;
+    padding: 14px 25px;
+    display: block;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+}
+
+.sidebar .nav > li > a:hover,
+.sidebar .nav > li.active > a {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    border-left-color: var(--primary);
+    text-decoration: none;
+}
+
+.sidebar .brand {
+    padding: 0 25px 25px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.admin-main {
+    flex: 1;
+    padding: 30px;
+}
+
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    padding: 10px 14px;
+    height: auto;
+    box-shadow: none;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67,97,238,0.15);
+}
+
+.help-block { color: var(--danger); font-size: 13px; }
+
+.has-error .form-control { border-color: var(--danger); }
+
+.stat-card {
+    text-align: center;
+}
+
+.stat-card h2 {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 10px 0;
+}
+
+.stat-card .stat-label {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.post-card h2 {
+    margin-top: 0;
+    font-weight: 600;
+}
+
+.post-card h2 a {
+    color: var(--text);
+}
+
+.post-card h2 a:hover {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.footer {
+    padding: 25px;
+    text-align: center;
+    color: var(--text-muted);
+    border-top: 1px solid var(--gray-2);
+    margin-top: 40px;
 }
