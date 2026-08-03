@@ -1,12 +1,11 @@
+<?php $this->setSiteTitle('Admin Dashboard'); ?>
 
-<?php $this->setSiteTitle('Admin|Bixter'); ?>
-
-<?php $this->start('head'); ?>
-
-<?php $this->end(); ?>
 <?php $this->start('body'); ?>
-
-<h1 class="text-center red">Hello From My Admin Bixter </h1>
-
-
+<div class="container">
+    <h1 class="text-center">Admin Dashboard</h1>
+    <p class="text-center">Welcome, <?= e(Application::$session->get('user_name')) ?>!</p>
+    <p class="text-center">
+        <a href="<?= root('admin/logout') ?>" class="btn btn-danger">Logout</a>
+    </p>
+</div>
 <?php $this->end(); ?>

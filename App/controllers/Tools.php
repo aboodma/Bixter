@@ -1,32 +1,31 @@
-<?php 
+<?php
 
- /**
-  * 
-  */
- class Tools extends controller
- {
- 	
- 	function __construct($controller,$action)
- 	{
- 		parent::__construct($controller,$action);
- 		$this->view->setLayout('default');
- 	}
+declare(strict_types=1);
 
+class Tools extends Controller
+{
+    public function __construct(string $controller, string $action)
+    {
+        parent::__construct($controller, $action);
+    }
 
- 	public function indexAction()
- 	{
- 		$this->view->render('tools/index');
- 	}
- 	public function firstAction()
- 	{
- 		$this->view->render('tools/first');
- 	}
- 	public function secondAction()
- 	{
- 		$this->view->render('tools/secon');
- 	}
- 	public function thirdAction()
- 	{
- 		$this->view->render('tools/third');
- 	}
- }
+    public function indexAction(): void
+    {
+        $this->view->render('tools/index');
+    }
+
+    public function firstAction(): void
+    {
+        $this->view->render('tools/first');
+    }
+
+    public function secondAction(): void
+    {
+        $this->view->render('tools/secon');
+    }
+
+    public function thirdAction(): void
+    {
+        $this->view->render('tools/third');
+    }
+}
