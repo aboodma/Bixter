@@ -17,6 +17,7 @@ spl_autoload_register(static function (string $class): void {
         'Bixter\\Core\\' => ROOT . DS . 'core' . DS,
         'Bixter\\App\\Controllers\\' => ROOT . DS . 'App' . DS . 'controllers' . DS,
         'Bixter\\App\\Models\\' => ROOT . DS . 'App' . DS . 'models' . DS,
+        'Bixter\\App\\Middleware\\' => ROOT . DS . 'App' . DS . 'middleware' . DS,
     ];
 
     foreach ($prefixes as $prefix => $baseDir) {

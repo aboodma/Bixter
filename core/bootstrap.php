@@ -14,6 +14,7 @@ if (file_exists($composerAutoload)) {
             'Bixter\\Core\\' => ROOT . DS . 'core' . DS,
             'Bixter\\App\\Controllers\\' => ROOT . DS . 'App' . DS . 'controllers' . DS,
             'Bixter\\App\\Models\\' => ROOT . DS . 'App' . DS . 'models' . DS,
+            'Bixter\\App\\Middleware\\' => ROOT . DS . 'App' . DS . 'middleware' . DS,
         ];
 
         foreach ($prefixes as $prefix => $baseDir) {
@@ -31,6 +32,8 @@ if (file_exists($composerAutoload)) {
 
 class_alias('Bixter\\Core\\Application', 'Application');
 class_alias('Bixter\\Core\\Router', 'Router');
+
+new Bixter\Core\Application();
 
 if (file_exists(ROOT . DS . 'routes' . DS . 'web.php')) {
     require_once ROOT . DS . 'routes' . DS . 'web.php';

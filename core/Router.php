@@ -7,54 +7,88 @@ namespace Bixter\Core;
 class Router
 {
     protected static array $routes = [];
+    protected static array $groupStack = [];
 
-    public static function get(string $pattern, $handler): void
+    public static function get(string $pattern, $handler, array $middleware = []): void
     {
-        self::add('GET', $pattern, $handler);
+        self::add('GET', $pattern, $handler, $middleware);
     }
 
-    public static function post(string $pattern, $handler): void
+    public static function post(string $pattern, $handler, array $middleware = []): void
     {
-        self::add('POST', $pattern, $handler);
+        self::add('POST', $pattern, $handler, $middleware);
     }
 
-    public static function put(string $pattern, $handler): void
+    public static function put(string $pattern, $handler, array $middleware = []): void
     {
-        self::add('PUT', $pattern, $handler);
+        self::add('PUT', $pattern, $handler, $middleware);
     }
 
-    public static function patch(string $pattern, $handler): void
+    public static function patch(string $pattern, $handler, array $middleware = []): void
     {
-        self::add('PATCH', $pattern, $handler);
+        self::add('PATCH', $pattern, $handler, $middleware);
     }
 
-    public static function delete(string $pattern, $handler): void
+    public static function delete(string $pattern, $handler, array $middleware = []): void
     {
-        self::add('DELETE', $pattern, $handler);
+        self::add('DELETE', $pattern, $handler, $middleware);
     }
 
-    public static function any(string $pattern, $handler): void
+    public static function any(string $pattern, $handler, array $middleware = []): void
     {
-        self::add('GET', $pattern, $handler);
-        self::add('POST', $pattern, $handler);
-        self::add('PUT', $pattern, $handler);
-        self::add('PATCH', $pattern, $handler);
-        self::add('DELETE', $pattern, $handler);
+        self::add('GET', $pattern, $handler, $middleware);
+        self::add('POST', $pattern, $handler, $middleware);
+        self::add('PUT', $pattern, $handler, $middleware);
+        self::add('PATCH', $pattern, $handler, $middleware);
+        self::add('DELETE', $pattern, $handler, $middleware);
     }
 
-    protected static function add(string $method, string $pattern, $handler): void
+    public static function group(array $attributes, \Closure $routes): void
     {
+        self::$groupStack[] = $attributes;
+        $routes();
+        array_pop(self::$groupStack);
+    }
+
+    protected static function add(string $method, string $pattern, $handler, array $middleware = []): void
+    {
+        $group = self::currentGroup();
+
+        $prefix = $group['prefix'] ?? '';
+        if ($prefix !== '' && !str_starts_with($pattern, $prefix)) {
+            $pattern = rtrim($prefix, '/') . '/' . ltrim($pattern, '/');
+        }
+
+        $groupMiddleware = $group['middleware'] ?? [];
+        $middleware = array_merge($groupMiddleware, $middleware);
+
         self::$routes[strtoupper($method)][] = [
             'pattern' => $pattern,
             'handler' => $handler,
+            'middleware' => $middleware,
             'regex' => self::compilePattern($pattern),
         ];
+    }
+
+    protected static function currentGroup(): array
+    {
+        $group = ['prefix' => '', 'middleware' => []];
+        foreach (self::$groupStack as $g) {
+            if (isset($g['prefix'])) {
+                $group['prefix'] = rtrim($group['prefix'], '/') . '/' . trim($g['prefix'], '/');
+            }
+            if (isset($g['middleware'])) {
+                $group['middleware'] = array_merge($group['middleware'], (array) $g['middleware']);
+            }
+        }
+        return $group;
     }
 
     protected static function compilePattern(string $pattern): string
     {
         $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<$1>[^/]+)', $pattern);
-        return '#^' . $pattern . '$#';
+        $pattern = rtrim($pattern, '/');
+        return '#^' . $pattern . '/?$#';
     }
 
     public static function dispatch(Request $request): bool
@@ -66,6 +100,7 @@ class Router
         foreach ($routes as $route) {
             if (preg_match($route['regex'], $path, $matches)) {
                 $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+                self::runMiddleware($route['middleware'], $request);
                 self::run($route['handler'], array_values($params));
                 return true;
             }
@@ -80,6 +115,20 @@ class Router
         $view = new View();
         $view->render('errors/404');
         return false;
+    }
+
+    protected static function runMiddleware(array $middleware, Request $request): void
+    {
+        foreach ($middleware as $class) {
+            if (!class_exists($class)) {
+                throw new \Exception("Middleware {$class} not found");
+            }
+            $instance = new $class();
+            if (!method_exists($instance, 'handle')) {
+                throw new \Exception("Middleware {$class} has no handle method");
+            }
+            $instance->handle($request);
+        }
     }
 
     protected static function run($handler, array $params): void

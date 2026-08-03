@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Bixter\App\Middleware\AuthMiddleware;
+
 Router::get('/', 'Home@indexAction');
 Router::get('/home', 'Home@indexAction');
 
@@ -18,21 +20,23 @@ Router::get('/admin/login', 'Admin@loginAction');
 Router::post('/admin/login', 'Admin@loginAction');
 Router::get('/admin/register', 'Admin@registerAction');
 Router::post('/admin/register', 'Admin@registerAction');
-Router::get('/admin/logout', 'Admin@logoutAction');
 
-// Admin (requires login)
-Router::get('/admin', 'Admin@indexAction');
-Router::get('/admin/users', 'Admin@usersAction');
-Router::get('/admin/user/{id}', 'Admin@userAction');
-Router::get('/admin/userCreate', 'Admin@userCreateAction');
-Router::post('/admin/userCreate', 'Admin@userCreateAction');
-Router::get('/admin/userEdit/{id}', 'Admin@userEditAction');
-Router::post('/admin/userEdit/{id}', 'Admin@userEditAction');
-Router::get('/admin/userDelete/{id}', 'Admin@userDeleteAction');
+// Admin
+Router::group(['prefix' => '/admin', 'middleware' => [AuthMiddleware::class]], function () {
+    Router::get('/', 'Admin@indexAction');
+    Router::get('/logout', 'Admin@logoutAction');
+    Router::get('/users', 'Admin@usersAction');
+    Router::get('/user/{id}', 'Admin@userAction');
+    Router::get('/userCreate', 'Admin@userCreateAction');
+    Router::post('/userCreate', 'Admin@userCreateAction');
+    Router::get('/userEdit/{id}', 'Admin@userEditAction');
+    Router::post('/userEdit/{id}', 'Admin@userEditAction');
+    Router::get('/userDelete/{id}', 'Admin@userDeleteAction');
 
-Router::get('/admin/posts', 'Admin@postsAction');
-Router::get('/admin/postCreate', 'Admin@postCreateAction');
-Router::post('/admin/postCreate', 'Admin@postCreateAction');
-Router::get('/admin/postEdit/{id}', 'Admin@postEditAction');
-Router::post('/admin/postEdit/{id}', 'Admin@postEditAction');
-Router::get('/admin/postDelete/{id}', 'Admin@postDeleteAction');
+    Router::get('/posts', 'Admin@postsAction');
+    Router::get('/postCreate', 'Admin@postCreateAction');
+    Router::post('/postCreate', 'Admin@postCreateAction');
+    Router::get('/postEdit/{id}', 'Admin@postEditAction');
+    Router::post('/postEdit/{id}', 'Admin@postEditAction');
+    Router::get('/postDelete/{id}', 'Admin@postDeleteAction');
+});
