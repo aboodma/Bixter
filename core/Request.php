@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Bixter\Core;
+
 class Request
 {
     public function method(): string

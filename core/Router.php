@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Bixter\Core;
+
 class Router
 {
     protected static array $routes = [];
@@ -81,25 +83,34 @@ class Router
 
     protected static function run($handler, array $params): void
     {
-        if ($handler instanceof Closure) {
+        if ($handler instanceof \Closure) {
             call_user_func_array($handler, $params);
             return;
         }
 
         if (is_string($handler) && strpos($handler, '@') !== false) {
             [$class, $method] = explode('@', $handler, 2);
+            $class = self::resolveController($class);
             if (!class_exists($class)) {
-                throw new Exception("Controller {$class} not found");
+                throw new \Exception("Controller {$class} not found");
             }
             $dispatch = new $class($class, $method);
             if (!method_exists($dispatch, $method)) {
-                throw new Exception("Method {$method} not found in {$class}");
+                throw new \Exception("Method {$method} not found in {$class}");
             }
             call_user_func_array([$dispatch, $method], $params);
             return;
         }
 
-        throw new Exception('Invalid route handler');
+        throw new \Exception('Invalid route handler');
+    }
+
+    protected static function resolveController(string $class): string
+    {
+        if (strpos($class, '\\') !== false) {
+            return $class;
+        }
+        return DEFAULT_CONTROLLER_NAMESPACE . $class;
     }
 
     protected static function conventionRoute(string $path): bool
@@ -121,7 +132,8 @@ class Router
             return false;
         }
 
-        $dispatch = new $controllerName($controllerName, $actionName);
+        $controller = DEFAULT_CONTROLLER_NAMESPACE . $controllerName;
+        $dispatch = new $controller($controller, $actionName);
         if (!method_exists($dispatch, $action)) {
             return false;
         }

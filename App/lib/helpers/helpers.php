@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Bixter\Core\Application;
+
 function dnd(mixed $data): void
 {
     echo '<pre>';

@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+namespace Bixter\App\Controllers;
+
+use Bixter\Core\Controller;
+use Bixter\App\Models\Post;
+
 class Posts extends Controller
 {
     protected Post $_post;

@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace Bixter\App\Models;
+
+use Bixter\Core\Application;
+
 class Migration
 {
     public function run(): void

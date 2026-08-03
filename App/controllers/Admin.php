@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+namespace Bixter\App\Controllers;
+
+use Bixter\Core\Controller;
+use Bixter\Core\Application;
+use Bixter\App\Models\User;
+use Bixter\App\Models\Post;
+
 class Admin extends Controller
 {
     protected User $_user;

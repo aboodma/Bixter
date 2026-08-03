@@ -9,22 +9,28 @@ $composerAutoload = ROOT . DS . 'vendor' . DS . 'autoload.php';
 if (file_exists($composerAutoload)) {
     require_once $composerAutoload;
 } else {
-    spl_autoload_register(static function (string $className): void {
-        $paths = [
-            ROOT . DS . 'core' . DS . $className . '.php',
-            ROOT . DS . 'core' . DS . 'Http' . DS . $className . '.php',
-            ROOT . DS . 'App' . DS . 'controllers' . DS . $className . '.php',
-            ROOT . DS . 'App' . DS . 'models' . DS . $className . '.php',
+    spl_autoload_register(static function (string $class): void {
+        $prefixes = [
+            'Bixter\\Core\\' => ROOT . DS . 'core' . DS,
+            'Bixter\\App\\Controllers\\' => ROOT . DS . 'App' . DS . 'controllers' . DS,
+            'Bixter\\App\\Models\\' => ROOT . DS . 'App' . DS . 'models' . DS,
         ];
 
-        foreach ($paths as $path) {
-            if (file_exists($path)) {
-                require_once $path;
-                return;
+        foreach ($prefixes as $prefix => $baseDir) {
+            if (strpos($class, $prefix) === 0) {
+                $relative = substr($class, strlen($prefix));
+                $path = $baseDir . str_replace('\\', DS, $relative) . '.php';
+                if (file_exists($path)) {
+                    require_once $path;
+                    return;
+                }
             }
         }
     });
 }
+
+class_alias('Bixter\\Core\\Application', 'Application');
+class_alias('Bixter\\Core\\Router', 'Router');
 
 if (file_exists(ROOT . DS . 'routes' . DS . 'web.php')) {
     require_once ROOT . DS . 'routes' . DS . 'web.php';
@@ -33,4 +39,4 @@ if (file_exists(ROOT . DS . 'routes' . DS . 'api.php')) {
     require_once ROOT . DS . 'routes' . DS . 'api.php';
 }
 
-Kernel::handle();
+Bixter\Core\Kernel::handle();

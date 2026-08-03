@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace Bixter\App\Models;
+
+use Bixter\Core\Model;
+
 class Post extends Model
 {
     protected string $_table = 'posts';

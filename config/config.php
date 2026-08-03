@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 define('SITE_TITLE', 'Bixter PHP Framework');
-define('PROOT', '/bixter/');
+define('PROOT', '/');
 define('DEBUG', true);
 
 define('DEFAULT_LAYOUT', 'default');
 define('DEFAULT_CONTROLLER', 'Home');
 define('DEFAULT_ACTION', 'indexAction');
+define('DEFAULT_CONTROLLER_NAMESPACE', 'Bixter\\App\\Controllers\\');
 
 define('DB_USER', 'root');
 define('DB_PASSWORD', '');

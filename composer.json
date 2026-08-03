@@ -1,6 +1,6 @@
 {
     "name": "griffindesign/bixter",
-    "description": "A simple PHP MVC framework",
+    "description": "A lightweight, fast PHP MVC framework",
     "type": "project",
     "license": "MIT",
     "require": {
@@ -10,11 +10,11 @@
         "phpunit/phpunit": "^10.0"
     },
     "autoload": {
-        "classmap": [
-            "core/",
-            "App/controllers/",
-            "App/models/"
-        ],
+        "psr-4": {
+            "Bixter\\Core\\": "core/",
+            "Bixter\\App\\Controllers\\": "App/controllers/",
+            "Bixter\\App\\Models\\": "App/models/"
+        },
         "files": [
             "App/lib/helpers/helpers.php"
         ]
