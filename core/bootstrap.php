@@ -12,6 +12,7 @@ if (file_exists($composerAutoload)) {
     spl_autoload_register(static function (string $className): void {
         $paths = [
             ROOT . DS . 'core' . DS . $className . '.php',
+            ROOT . DS . 'core' . DS . 'Http' . DS . $className . '.php',
             ROOT . DS . 'App' . DS . 'controllers' . DS . $className . '.php',
             ROOT . DS . 'App' . DS . 'models' . DS . $className . '.php',
         ];
@@ -25,4 +26,11 @@ if (file_exists($composerAutoload)) {
     });
 }
 
-Router::route($url);
+if (file_exists(ROOT . DS . 'routes' . DS . 'web.php')) {
+    require_once ROOT . DS . 'routes' . DS . 'web.php';
+}
+if (file_exists(ROOT . DS . 'routes' . DS . 'api.php')) {
+    require_once ROOT . DS . 'routes' . DS . 'api.php';
+}
+
+Kernel::handle();
