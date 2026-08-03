@@ -1,0 +1,30 @@
+{
+    "name": "griffindesign/bixter",
+    "description": "A simple PHP MVC framework",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "classmap": [
+            "core/",
+            "App/controllers/",
+            "App/models/"
+        ],
+        "files": [
+            "App/lib/helpers/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bixter\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    }
+}

@@ -11,6 +11,15 @@
     <?= $this->content('head') ?>
 </head>
 <body>
+    <div class="container" style="margin-bottom: 10px;">
+        <?php if ($message = Application::$session->flash('success')) : ?>
+            <div class="alert alert-success"><?= e($message) ?></div>
+        <?php endif; ?>
+        <?php if ($message = Application::$session->flash('error')) : ?>
+            <div class="alert alert-danger"><?= e($message) ?></div>
+        <?php endif; ?>
+    </div>
+
     <?= $this->content('body') ?>
 </body>
 </html>

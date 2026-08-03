@@ -18,9 +18,10 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="<?= root() ?>">Home</a></li>
+                <li><a href="<?= root('posts') ?>">Posts</a></li>
                 <li><a href="<?= root('tools') ?>">Tools</a></li>
-                <li><a href="<?= root('admin') ?>">Admin</a></li>
                 <?php if (Application::$session->has('user_id')) : ?>
+                    <li><a href="<?= root('admin') ?>">Admin</a></li>
                     <li><a href="<?= root('admin/logout') ?>">Logout</a></li>
                 <?php else : ?>
                     <li><a href="<?= root('admin/login') ?>">Login</a></li>
@@ -29,6 +30,15 @@
             </ul>
         </div>
     </nav>
+
+    <div class="container" style="margin-bottom: 20px;">
+        <?php if ($message = Application::$session->flash('success')) : ?>
+            <div class="alert alert-success"><?= e($message) ?></div>
+        <?php endif; ?>
+        <?php if ($message = Application::$session->flash('error')) : ?>
+            <div class="alert alert-danger"><?= e($message) ?></div>
+        <?php endif; ?>
+    </div>
 
     <?= $this->content('body') ?>
 </body>

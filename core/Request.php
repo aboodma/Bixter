@@ -6,12 +6,12 @@ class Request
 {
     public function isPost(): bool
     {
-        return $_SERVER['REQUEST_METHOD'] === 'POST';
+        return ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST';
     }
 
     public function isGet(): bool
     {
-        return $_SERVER['REQUEST_METHOD'] === 'GET';
+        return ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET';
     }
 
     public function post(string $key = '', mixed $default = null): mixed
