@@ -50,31 +50,8 @@ class Database
         return $this->query($sql, $params)->fetchAll();
     }
 
-    public function insert(string $table, array $data): int
+    public function table(string $table): QueryBuilder
     {
-        $columns = implode('`, `', array_keys($data));
-        $placeholders = ':' . implode(', :', array_keys($data));
-        $sql = "INSERT INTO `{$table}` (`{$columns}`) VALUES ({$placeholders})";
-        $this->query($sql, $data);
-        return (int) $this->getPdo()->lastInsertId();
-    }
-
-    public function update(string $table, array $data, string $where, array $whereParams): int
-    {
-        $set = [];
-        foreach (array_keys($data) as $key) {
-            $set[] = "`{$key}` = :{$key}";
-        }
-        $setSql = implode(', ', $set);
-        $sql = "UPDATE `{$table}` SET {$setSql} WHERE {$where}";
-        $this->query($sql, array_merge($data, $whereParams));
-        return $this->query("SELECT ROW_COUNT() as c")->fetch()['c'] ?? 0;
-    }
-
-    public function delete(string $table, string $where, array $params): int
-    {
-        $sql = "DELETE FROM `{$table}` WHERE {$where}";
-        $this->query($sql, $params);
-        return $this->query("SELECT ROW_COUNT() as c")->fetch()['c'] ?? 0;
+        return new QueryBuilder($this, $table);
     }
 }

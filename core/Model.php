@@ -6,43 +6,47 @@ namespace Bixter\Core;
 
 abstract class Model
 {
-    protected Database $_db;
     protected string $_table = '';
     protected array $_errors = [];
+    protected ?QueryBuilder $_query = null;
 
     public function __construct()
     {
-        $this->_db = Application::$db;
+    }
+
+    public function query(): QueryBuilder
+    {
+        return Application::$db->table($this->_table);
     }
 
     public function findById(int $id): ?array
     {
-        return $this->_db->fetch("SELECT * FROM {$this->_table} WHERE id = :id LIMIT 1", ['id' => $id]);
+        return $this->query()->where('id', $id)->first();
     }
 
     public function findAll(): array
     {
-        return $this->_db->fetchAll("SELECT * FROM {$this->_table} ORDER BY id DESC");
+        return $this->query()->orderBy('id', 'DESC')->get();
     }
 
     public function findOne(string $column, mixed $value): ?array
     {
-        return $this->_db->fetch("SELECT * FROM {$this->_table} WHERE {$column} = :value LIMIT 1", ['value' => $value]);
+        return $this->query()->where($column, $value)->first();
     }
 
     public function insert(array $data): int
     {
-        return $this->_db->insert($this->_table, $data);
+        return $this->query()->insert($data);
     }
 
     public function update(int $id, array $data): int
     {
-        return $this->_db->update($this->_table, $data, 'id = :id', ['id' => $id]);
+        return $this->query()->where('id', $id)->update($data);
     }
 
     public function delete(int $id): int
     {
-        return $this->_db->delete($this->_table, 'id = :id', ['id' => $id]);
+        return $this->query()->where('id', $id)->delete();
     }
 
     public function getErrors(): array

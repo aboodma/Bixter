@@ -15,6 +15,7 @@ spl_autoload_register(static function (string $class): void {
     $prefixes = [
         'Bixter\\Core\\' => ROOT . DS . 'core' . DS,
         'Bixter\\App\\Models\\' => ROOT . DS . 'App' . DS . 'models' . DS,
+        'Bixter\\App\\Controllers\\' => ROOT . DS . 'App' . DS . 'controllers' . DS,
     ];
 
     foreach ($prefixes as $prefix => $baseDir) {
@@ -30,11 +31,8 @@ spl_autoload_register(static function (string $class): void {
 });
 
 class_alias('Bixter\\Core\\Application', 'Application');
-class_alias('Bixter\\Core\\Database', 'Database');
 
-$db = new Bixter\Core\Database();
-Bixter\Core\Application::$db = $db;
-$migration = new Bixter\App\Models\Migration();
-$migration->run();
+Bixter\Core\Application::$db = new Bixter\Core\Database();
 
-echo "Migrations completed.\n";
+$migrator = new Bixter\Core\Migrator();
+$migrator->run();

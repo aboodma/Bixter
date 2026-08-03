@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bixter\App\Models;
 
 use Bixter\Core\Model;
+use Bixter\Core\Application;
 
 class Post extends Model
 {
@@ -12,7 +13,10 @@ class Post extends Model
 
     public function findPublished(): array
     {
-        return $this->_db->fetchAll("SELECT * FROM {$this->_table} WHERE status = :status ORDER BY id DESC", ['status' => 'published']);
+        return Application::$db->table($this->_table)
+            ->where('status', 'published')
+            ->orderBy('id', 'DESC')
+            ->get();
     }
 
     public function findBySlug(string $slug): ?array

@@ -13,7 +13,8 @@
         "psr-4": {
             "Bixter\\Core\\": "core/",
             "Bixter\\App\\Controllers\\": "App/controllers/",
-            "Bixter\\App\\Models\\": "App/models/"
+            "Bixter\\App\\Models\\": "App/models/",
+            "Bixter\\Database\\Migrations\\": "database/migrations/"
         },
         "files": [
             "App/lib/helpers/helpers.php"
